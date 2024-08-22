@@ -1,0 +1,48 @@
+<template>
+    <div class="demo-only demo-only--sizing slds-grid slds-wrap">
+        <div class="slds-size_6-of-12">
+            <lightning-input label="Rechercher adresse desservie" value={searchTerm} onchange={handleInputChange}></lightning-input>
+        </div>
+    </div>   
+    
+    <div class="slds-m-top_medium">
+        <lightning-button variant="brand" label="Rechercher" onclick={handleSearch}></lightning-button>
+    </div>
+    
+    <div class="slds-m-top_medium">
+        <template if:true={showError}>
+            <p class="slds-text-color_error slds-m-around_medium">Aucun résultat trouvé pour "{searchTerm}".</p>
+        </template>
+    
+        <template if:true={showTable}>
+            <lightning-datatable
+                key-field="Id"
+                data={AdresseDesservies}
+                columns={columns}
+                selected-rows={selectedRows}
+                onrowselection={handleRowSelection}
+                hide-checkbox-column="false">
+            </lightning-datatable>
+            <!-- <lightning-card >
+                <lightning-datatable
+                    key-field="id"
+                    data={AdresseDesservies}
+                    columns={columns}
+                    selected-rows={selectedRows}
+                    onrowselection={handleRowSelection}
+                    hide-checkbox-column="false">
+                </lightning-datatable>
+        
+                <template if:true={selectedRows.length}>
+                    <p class="slds-m-top_medium">Lignes sélectionnées :</p>
+                    <ul>
+                        <template for:each={selectedRows} for:item="row">
+                            <li key={row}>{row}</li>
+                        </template>
+                    </ul>
+                </template>
+            </lightning-card> -->
+        </template>
+    </div>
+    
+</template>

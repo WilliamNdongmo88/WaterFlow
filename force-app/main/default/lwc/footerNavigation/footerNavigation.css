@@ -1,0 +1,17 @@
+.footer-container {
+    display: flex;
+    justify-content: flex-end;
+    padding: 1rem;
+    background-color: #f4f6f9;
+    border-top: 1px solid #d8dde6;
+}
+
+.button-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+}
+
+.slds-m-right_small {
+    margin-right: 0.5rem;
+}

@@ -1,0 +1,28 @@
+<template>
+    <lightning-input
+        label="Veuillez renseigner la ville desservie"
+        value={searchTerm}
+        onchange={handleChange}
+        placeholder="Enter at least 3 characters to search"
+    ></lightning-input>
+
+    <template if:true={showDropdown}>
+        <ul class="dropdown-list">
+            <template for:each={searchResults} for:item="item">
+                <li key={item.id} onclick={handleSelect}>{item.nom}</li>
+            </template>
+        </ul>
+    </template>
+
+    <template if:true={isCorrect}>
+        <p class="green-text">Ville gérée.</p>
+    </template>
+    <template if:false={isInCorrect}>
+        <p class="red-text">Ville non gérée.</p>
+    </template>
+    <!--  -->
+    <template if:true={isLoading}>
+        <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
+    </template>
+    
+</template>

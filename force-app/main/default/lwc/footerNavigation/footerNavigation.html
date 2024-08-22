@@ -1,0 +1,12 @@
+<template>
+    <div class="slds-grid slds-gutters">
+        <template if:false={showBack}>
+            <div class="slds-col">
+                <lightning-button label="Précédent" onclick={handleBack}></lightning-button>
+            </div>
+        </template>
+        <div class="slds-col slds-text-align_right">
+            <lightning-button variant="brand" label="Suivant" onclick={handleNext} disabled={isdisable}></lightning-button>
+        </div>
+    </div>
+</template>

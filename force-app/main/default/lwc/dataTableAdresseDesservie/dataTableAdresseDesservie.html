@@ -1,0 +1,41 @@
+<template>
+    <div class="slds-m-top_medium">
+        <lightning-button variant="brand" label="Rechercher" onclick={handleSearch}></lightning-button>
+    </div>
+
+    <template if:true={showError}>
+        <p class="slds-text-color_error slds-m-around_medium">Aucun résultat trouvé pour "{searchTerm}".</p>
+    </template>
+
+    <div class="slds-m-top_medium">
+        <template if:true={showTable}>
+            <lightning-datatable
+                key-field="Id"
+                data={AdresseDesservies}
+                columns={columns}
+                selected-rows={selectedRows}
+                onrowselection={handleRowSelection}
+                hide-checkbox-column="false">
+            </lightning-datatable>
+            <!-- <lightning-card >
+                <lightning-datatable
+                    key-field="id"
+                    data={AdresseDesservies}
+                    columns={columns}
+                    selected-rows={selectedRows}
+                    onrowselection={handleRowSelection}
+                    hide-checkbox-column="false">
+                </lightning-datatable>
+        
+                <template if:true={selectedRows.length}>
+                    <p class="slds-m-top_medium">Lignes sélectionnées :</p>
+                    <ul>
+                        <template for:each={selectedRows} for:item="row">
+                            <li key={row}>{row}</li>
+                        </template>
+                    </ul>
+                </template>
+            </lightning-card> -->
+        </template>
+    </div>
+</template>
