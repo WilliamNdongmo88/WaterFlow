@@ -14,15 +14,6 @@ export default class SearchAdressDesservie extends LightningElement {
     messageContext;
     infoClient;
 
-    /*@track columns = [
-        { label: 'Adresse desservie', fieldName: 'adresse_desservie__c', type: 'text' },
-        { label: 'Nom ancien occupant', fieldName: 'nomAncienOccupant__c', type: 'text' },
-        { label: 'Prénom ancien occupant', fieldName: 'prenomAncienOccupant__c', type: 'text' },
-        { label: 'Matricule compteur', fieldName: 'matriculeCompteur__c', type: 'text' },
-        { label: 'Numero de serie', fieldName: 'NumeroSerie__c', type: 'text' },
-        { label: 'Statut du branchement', fieldName: 'statutBranchement__c', type: 'text' },
-        { label: 'Statut contrat', fieldName: 'statutContrat__c', type: 'text' }
-    ];*/
     infoClientData() {
         let nom = this.template.querySelector('[data-id="nom"]').value;
         let prenom = this.template.querySelector('[data-id="prenom"]').value;
