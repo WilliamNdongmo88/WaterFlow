@@ -1,6 +1,8 @@
 <template>
     <div class="demo-only demo-only--sizing slds-grid slds-wrap">
         <div class="slds-size_6-of-12">
+            <lightning-input data-id="nom" name="nom" type="text" label="Nom" value={nom} required="true"></lightning-input>
+            <lightning-input data-id="prenom" name="prenom" type="text" label="Prenom" value={prenom} required="true"></lightning-input>
             <lightning-input label="Rechercher adresse desservie" value={searchTerm} onchange={handleInputChange}></lightning-input>
         </div>
     </div>   
@@ -15,33 +17,78 @@
         </template>
     
         <template if:true={showTable}>
-            <lightning-datatable
-                key-field="Id"
-                data={AdresseDesservies}
-                columns={columns}
-                selected-rows={selectedRows}
-                onrowselection={handleRowSelection}
-                hide-checkbox-column="false">
-            </lightning-datatable>
-            <!-- <lightning-card >
-                <lightning-datatable
-                    key-field="id"
-                    data={AdresseDesservies}
-                    columns={columns}
-                    selected-rows={selectedRows}
-                    onrowselection={handleRowSelection}
-                    hide-checkbox-column="false">
-                </lightning-datatable>
-        
-                <template if:true={selectedRows.length}>
-                    <p class="slds-m-top_medium">Lignes sélectionnées :</p>
-                    <ul>
-                        <template for:each={selectedRows} for:item="row">
-                            <li key={row}>{row}</li>
-                        </template>
-                    </ul>
-                </template>
-            </lightning-card> -->
+            <lightning-card>
+                <div class="slds-p-horizontal_small">
+                    <div class="slds-scrollable_y">
+                        <div class="slds-scrollable_x">
+                            <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-no-row-hover">
+                                <thead>
+                                    <tr class="slds-line-height_reset">
+                                        <th class="" scope="col">
+                                            <div class="slds-truncate" title="Radio Select">Choix</div>
+                                        </th>
+                                        <th class="" scope="col">
+                                            <div class="slds-truncate" title="Adresse desservie">Adresse desservie</div>
+                                        </th>
+                                        <th class="" scope="col">
+                                            <div class="slds-truncate" title="Nom ancien occupant">Nom ancien occupant</div>
+                                        </th>
+                                        <th class="" scope="col">
+                                            <div class="slds-truncate" title="Prénom ancien occupant">Prénom ancien occupant</div>
+                                        </th>
+                                        <th class="" scope="col">
+                                            <div class="slds-truncate" title="Matricule compteur">Matricule compteur</div>
+                                        </th>
+                                        <th class="" scope="col">
+                                            <div class="slds-truncate" title="Numero de serie">Numero de serie</div>
+                                        </th>
+                                        <th class="" scope="col">
+                                            <div class="slds-truncate" title="Statut du branchement">Statut du branchement</div>
+                                        </th>
+                                        <th class="" scope="col">
+                                            <div class="slds-truncate" title="Statut contrat">Statut contrat</div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <template for:each={AdresseDesservies} for:item="obj">
+                                        <tr key={obj.Id}>
+                                            <th scope="col">
+                                                <div>
+                                                    <lightning-input type="radio" value={obj.Id} data-id={obj.Id} name="radio"
+                                                        data-name="radio" data-check={obj.Id} onclick={getAllSelectedRecord}>
+                                                    </lightning-input>
+                                                </div>
+                                            </th>
+                                            <th scope="col">
+                                                <div>{obj.adresse_desservie__c}</div>
+                                            </th>
+                                            <th scope="col">
+                                                <div>{obj.nomAncienOccupant__c}</div>
+                                            </th>
+                                            <th scope="col">
+                                                <div>{obj.prenomAncienOccupant__c}</div>
+                                            </th>
+                                            <th scope="col">
+                                                <div>{obj.matriculeCompteur__c}</div>
+                                            </th>
+                                            <th scope="col">
+                                                <div>{obj.NumeroSerie__c}</div>
+                                            </th>
+                                            <th scope="col">
+                                                <div>{obj.statutBranchement__c}</div>
+                                            </th>
+                                            <th scope="col">
+                                                <div>{obj.statutContrat__c}</div>
+                                            </th>
+                                        </tr>
+                                    </template>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </lightning-card>
         </template>
     </div>
     

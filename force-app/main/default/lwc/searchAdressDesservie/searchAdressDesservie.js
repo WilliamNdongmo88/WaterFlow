@@ -8,11 +8,13 @@ export default class SearchAdressDesservie extends LightningElement {
     @track AdresseDesservies = [];
     @track showTable = false;
     @track showError = false;
-    @track selectedRows = [];
+    @track selectedRecordIds = [];
+    @track selectedRadioRecord = '';
     @wire(MessageContext)
     messageContext;
+    infoClient;
 
-    @track columns = [
+    /*@track columns = [
         { label: 'Adresse desservie', fieldName: 'adresse_desservie__c', type: 'text' },
         { label: 'Nom ancien occupant', fieldName: 'nomAncienOccupant__c', type: 'text' },
         { label: 'Prénom ancien occupant', fieldName: 'prenomAncienOccupant__c', type: 'text' },
@@ -20,46 +22,88 @@ export default class SearchAdressDesservie extends LightningElement {
         { label: 'Numero de serie', fieldName: 'NumeroSerie__c', type: 'text' },
         { label: 'Statut du branchement', fieldName: 'statutBranchement__c', type: 'text' },
         { label: 'Statut contrat', fieldName: 'statutContrat__c', type: 'text' }
-    ];
-
+    ];*/
+    infoClientData() {
+        let nom = this.template.querySelector('[data-id="nom"]').value;
+        let prenom = this.template.querySelector('[data-id="prenom"]').value;
+        return {
+            nom: nom,
+            prenom: prenom,
+        }
+    }
     handleInputChange(event) {
         this.searchTerm = event.target.value;
     }
 
-    handleRowSelection(event) {
-        this.selectedRows = event.detail.selectedRows.map(row => row.id);
-        console.log('Lignes sélectionnées:', this.selectedRows);
-    }
-
     handleSearch() {
-        if (this.searchTerm) {
-            searchAdressDesservieApi({ searchTerm: this.searchTerm })
-                .then(result => {
-                    if (result.length > 0) {
-                        this.AdresseDesservies = result;
-                        this.showTable = true;
-                        this.showError = false;
-                        const payload = {
-                            isdisable : false,
-                        };
-                        publish(this.messageContext, COUNT_UPDATED_CHANNEL, payload);
-                    } else {
+        this.infoClient = this.infoClientData();
+        console.log('infoClient-->', JSON.stringify(this.infoClient));
+        var isValid  =  this.checkInfoClient();
+        if(isValid){
+            if (this.searchTerm) {
+                searchAdressDesservieApi({ searchTerm: this.searchTerm })
+                    .then(result => {
+                        console.log('result : ', result);
+                        if (result.length > 0) {
+                            this.AdresseDesservies = result;
+                            this.showTable = true;
+                            this.showError = false;
+                        } else {
+                            this.AdresseDesservies = [];
+                            this.showTable = false;
+                            this.showError = true;
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Erreur lors de la recherche:', error);
                         this.AdresseDesservies = [];
                         this.showTable = false;
                         this.showError = true;
-                    }
-                })
-                .catch(error => {
-                    console.error('Erreur lors de la recherche:', error);
-                    this.AdresseDesservies = [];
-                    this.showTable = false;
-                    this.showError = true;
-                });
-        } else {
-            this.AdresseDesservies = [];
-            this.showTable = false;
-            this.showError = true;
+                    });
+            } else {
+                this.AdresseDesservies = [];
+                this.showTable = false;
+                this.showError = true;
+            }
         }
+    }
+
+    getAllSelectedRecord() {
+        let idadressdesservie = '';
+        let selectedRadioRows = this.template.querySelectorAll('lightning-input[data-name="radio"]');
+        selectedRadioRows.forEach(currentItem => {
+            if (currentItem.type === 'radio' && currentItem.checked) {
+                idadressdesservie = currentItem.value;
+                const payload = {
+                    isdisable : false,
+                };
+                publish(this.messageContext, COUNT_UPDATED_CHANNEL, payload);
+            }
+        })
+        console.log('Id adress desservie : ' + idadressdesservie);
+    }
+
+    checkInfoClient(){
+        var nom =this.template.querySelector('[data-id="nom"]');
+        var prenom     =this.template.querySelector('[data-id="prenom"]');
+
+        var isvalid = true;
+        
+        if(nom.value == ""){
+            nom.required = true;
+            if(!nom.reportValidity('')) {
+                isvalid = false;
+                nom.setCustomValidityForField('Complete this field','Nom');
+            }
+        }
+        if(prenom.value == ""){
+            prenom.required = true;
+            if(!prenom.reportValidity('')) {
+                isvalid = false;
+                prenom.setCustomValidityForField('Complete this field','Prenom');
+            }
+        }
+        return isvalid;
     }
 }
 

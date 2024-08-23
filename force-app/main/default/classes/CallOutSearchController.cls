@@ -74,4 +74,9 @@ public with sharing class CallOutSearchController {
         //System.debug('###adressList--->' + adressList);
         //return adressList;    
     }*/
+    @AuraEnabled(Cacheable = true)
+        public static List<AdresseDesservie__c> getAccounts(){
+          return [SELECT Id, adresse_desservie__c, nomAncienOccupant__c, prenomAncienOccupant__c,matriculeCompteur__c,NumeroSerie__c,
+          statutBranchement__c,statutContrat__c FROM AdresseDesservie__c ];
+    }
 }

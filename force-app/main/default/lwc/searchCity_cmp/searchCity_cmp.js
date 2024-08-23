@@ -67,6 +67,11 @@ export default class SearchCity_cmp extends LightningElement {
                 console.log('ID:', item.id);
                 console.log('name:', item.nom);
                 console.log('isCovered:', item.isCovered);
+                const payload = {
+                    showBack : this.showBack,
+                    isdisable : !this.isdisable,
+                };
+                publish(this.messageContext, COUNT_UPDATED_CHANNEL, payload);
             }
         });
     }

@@ -90,23 +90,7 @@
                 <name>screen_infoClient_Section1_Column1</name>
                 <fieldType>Region</fieldType>
                 <fields>
-                    <name>Nom</name>
-                    <dataType>String</dataType>
-                    <fieldText>Nom</fieldText>
-                    <fieldType>InputField</fieldType>
-                    <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
-                    <isRequired>true</isRequired>
-                </fields>
-                <fields>
-                    <name>Prenom</name>
-                    <dataType>String</dataType>
-                    <fieldText>Prénom</fieldText>
-                    <fieldType>InputField</fieldType>
-                    <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
-                    <isRequired>true</isRequired>
-                </fields>
-                <fields>
-                    <name>searchadress</name>
+                    <name>searchadresse</name>
                     <extensionName>c:searchAdressDesservie</extensionName>
                     <fieldType>ComponentInstance</fieldType>
                     <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
@@ -116,18 +100,7 @@
                 <inputParameters>
                     <name>width</name>
                     <value>
-                        <stringValue>6</stringValue>
-                    </value>
-                </inputParameters>
-                <isRequired>false</isRequired>
-            </fields>
-            <fields>
-                <name>screen_infoClient_Section1_Column2</name>
-                <fieldType>Region</fieldType>
-                <inputParameters>
-                    <name>width</name>
-                    <value>
-                        <stringValue>6</stringValue>
+                        <stringValue>12</stringValue>
                     </value>
                 </inputParameters>
                 <isRequired>false</isRequired>
