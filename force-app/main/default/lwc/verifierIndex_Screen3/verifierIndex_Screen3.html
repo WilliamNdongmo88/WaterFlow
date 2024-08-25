@@ -1,0 +1,24 @@
+<template>
+    <div class="custom-container">
+        <div class="customLeftSection">
+            <template if:true={indexTropFort}>
+                <p class="custom-message">Consommation trop forte</p>
+            </template>
+            <template if:true={indexTropFaible}>
+                <p class="custom-message">Consommation trop faible</p>
+            </template>
+            <template if:true={indexCorrect}>
+                <p class="customMessage">Consommation correcte</p>
+            </template>
+            <div class="checkbox">
+                <p class="text">Confirmer le relevé d'index malgré l'anomalie.</p>
+                <div class="slds-m-left_none box">
+                    <lightning-input data-id="checkbox" name="checkbox" checked={checked} type="checkbox" onclick={handleCheckBox} disabled={isdisablecheckbox}></lightning-input>
+                </div>
+            </div>
+        </div>
+        <div class="custom-right-section">
+            <lightning-button variant="brand" label="Vérifier l'index" onclick={handleCheckIndex} disabled={isdisableButton}></lightning-button>
+        </div>
+    </div>    
+</template>

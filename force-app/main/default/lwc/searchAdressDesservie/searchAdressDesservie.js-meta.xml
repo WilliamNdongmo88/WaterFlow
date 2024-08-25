@@ -5,4 +5,14 @@
     <targets>
         <target>lightning__FlowScreen</target>
     </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__FlowScreen">
+            <property name="city" type="String" role="inputOnly"/>
+            <property name="nom" type="String" role="outputOnly"/>
+            <property name="prenom" type="String" role="outputOnly"/>
+            <property name="adressdesservie" type="String" role="outputOnly"/>
+            <property name="ancienIndex" type="String" role="outputOnly"/>
+            <property name="dateRernierReleveIndex" type="String" role="outputOnly"/>
+        </targetConfig>
+    </targetConfigs>
 </LightningComponentBundle>

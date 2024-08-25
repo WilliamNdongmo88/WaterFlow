@@ -49,6 +49,7 @@ export default class SearchCity_cmp extends LightningElement {
         this.searchTerm = event.target.innerText;
         this.searchResults.forEach(item => {
             if (this.searchTerm == item.nom && item.isCovered == 'true') {
+                this.getCity = this.searchTerm;
                 this.showDropdown = false;
                 this.isCorrect = true;
                 this.isInCorrect = true;

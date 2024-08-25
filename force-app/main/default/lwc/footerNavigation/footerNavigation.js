@@ -41,7 +41,7 @@ export default class FooterNavigation extends LightningElement {
     handleMessage(message) {
         this.isdisable = message.isdisable;
         //this.showBack = message.showBack;
-        console.log('showBack : ', this.showBack);
+        //console.log('showBack : ', this.showBack);
     }
 
     connectedCallback() {

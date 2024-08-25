@@ -3,13 +3,14 @@
     <apiVersion>61.0</apiVersion>
     <isExposed>true</isExposed>
     <targets>
-        <target>lightning__HomePage</target>
         <target>lightning__FlowScreen</target>
     </targets>
     <targetConfigs>
         <targetConfig targets="lightning__FlowScreen">
-            <property name="getCity" type="String" role="outputOnly"/>
-            <!-- <property name="getCity" label="City" type="String"/> -->        
+            <property name="ancienIndex" type="String" role="inputOnly"/>
+            <property name="dateDernierReleveIndex" type="String" role="inputOnly"/>
+            <property name="IndexAbonnement" type="String" role="inputOnly"/>
+            <property name="dateReleve" type="String" role="inputOnly"/>
         </targetConfig>
-    </targetConfigs>    
+    </targetConfigs>
 </LightningComponentBundle>

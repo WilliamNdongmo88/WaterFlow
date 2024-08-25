@@ -1,0 +1,47 @@
+.custom-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+}
+
+.customLeftSection {
+    max-width: 70%;
+    margin-top: -35px;
+}
+
+.custom-right-section {
+    max-width: 30%;
+    text-align: right;
+    margin-right: -14px;
+}
+
+.custom-message {
+    margin-bottom: 0.5rem;
+    color: red;
+    font-weight: bold;
+    margin-left: -14px;
+}
+
+.customMessage{
+    margin-bottom: 0.5rem;
+    color: green;
+    font-weight: bold;
+    margin-left: -14px;
+}
+
+.box{
+    margin-left: -13px;
+}
+.checkbox {
+    margin-top: -10px;
+}
+
+.text {
+    margin-top: -10px;
+    margin-left: -14px;
+}
+
+.slds-button_brand {
+    padding: 0.75rem 1.5rem;
+}
