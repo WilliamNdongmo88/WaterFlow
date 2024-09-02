@@ -1,5 +1,7 @@
 import { LightningElement, api, track, wire } from 'lwc';
 import searchApi from '@salesforce/apex/CallOutSearchController.searchCityApi';
+//import searchApi from '@salesforce/apex/CallOutSearchController.searchAdresseApi';
+
 import { publish, MessageContext } from 'lightning/messageService';
 import COUNT_UPDATED_CHANNEL from '@salesforce/messageChannel/Count_Updated__c';
 
@@ -32,10 +34,12 @@ export default class SearchCity_cmp extends LightningElement {
 
         searchApi({})
         .then(result => {
+            console.log('result:', result);
             this.searchResults = result.filter(item =>
                 item.nom.toLowerCase().includes(this.searchTerm.toLowerCase())
             );
             this.showDropdown = this.searchResults.length > 0;
+            console.log('result:', result);
         })
         .catch(error => {
             console.error('Erreur lors de la récupération des données:', error);

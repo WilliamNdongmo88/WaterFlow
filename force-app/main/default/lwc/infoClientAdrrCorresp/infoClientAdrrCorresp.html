@@ -1,0 +1,84 @@
+<template>
+    <div class="slds-p-around_none slds-m-top_x-small slds-m-bottom_medium slds-m-horizontal_none">
+        <lightning-layout class="slds-m-bottom_medium">
+            <lightning-layout-item flexibility="grow">
+                    <lightning-combobox
+                        data-id="civility"
+                        name="civility"
+                        label="Civilité"
+                        value={valueCivility}
+                        placeholder="-- Aucun --"
+                        options={options}
+                        onchange={handleChangeCivility}
+                        required>
+                    </lightning-combobox>
+                    <lightning-input data-id="nom" name="nom" type="text" label="Nom" value={nom} required></lightning-input>
+                    <lightning-input data-id="prenom" name="prenom" type="text" label="Prenom" value={prenom} required></lightning-input>
+                    <lightning-input data-id="date" name="date" type="date" label="Date de naissance" value={date} onchange={handleChangeDateNaiss} required></lightning-input>
+                    <p if:true={showText} style="color: red;">La date doit datée d'au moins 21 ans</p>
+            </lightning-layout-item>
+            <lightning-layout-item flexibility="grow">
+                <div class="header-column slds-m-left_x-small slds-m-right_x-small">
+                    <lightning-input data-id="email" label="Adresse e-mail" name="email" type="text" value={email} onchange={handleChangeEmail}></lightning-input>
+                    <div class="slds-m-bottom_xx-small slds-m-top_xx-small">
+                        <lightning-input data-id="checkboxemail" name="checkboxemail" label="Recevoir des emails de communications/actualités ?" checked={checked} type="checkbox" onclick={handleCheckBox}></lightning-input>
+                    </div>
+                    <lightning-input data-id="mobile" label="Mobile" name="mobile" type="text" value={mobile} onchange={handleChangeMobile}></lightning-input>
+                    <div class="slds-m-bottom_xx-small slds-m-top_xx-small">
+                        <lightning-input data-id="checkboxsms" name="checkboxsms" label="Recevoir des sms de communications/actualités ?" checked={checked} type="checkbox" onclick={handleCheckBox}></lightning-input>
+                    </div>
+                    <lightning-input data-id="fixe" label="Téléphone Fixe" name="fixe" type="text" value={telephoneFixe} onchange={handleChangeFix}></lightning-input>
+                </div>
+            </lightning-layout-item>
+        </lightning-layout>
+    </div>
+    <div>
+        <p>Adresse de correspondance normalisée :</p>
+        <lightning-input
+            label="Veuillez renseigner la ville desservie"
+            value={searchTerm}
+            onchange={handleChange}
+            placeholder="Enter at least 3 characters to search"
+            ></lightning-input>
+
+            <template if:true={showDropdown}>
+            <ul class="dropdown-list">
+                <template for:each={searchResults} for:item="item">
+                    <li key={item.id} data-id={item.nom} onclick={handleSelect}>{item.nom}</li>
+                </template>
+            </ul>
+        </template>
+
+        <lightning-layout class="slds-m-bottom_medium">
+            <lightning-layout-item flexibility="grow">
+                    <lightning-input data-id="adresse" name="adresse" type="text" label="Adresse" value={adresse} disabled={isDisabled} onchange={handleChangeAdresse} required></lightning-input>
+                    <lightning-input data-id="codepostal" name="codepostal" type="text" label="Code Postal" value={codepostal} disabled={isDisabled} onchange={handleChangeCodePostal} required></lightning-input>
+                    <lightning-input data-id="ville" name="ville" type="text" label="Ville" value={ville} disabled={isDisabled} onchange={handleChangeVille} required></lightning-input>
+                    <div class="slds-m-bottom_xx-small slds-m-top_xx-small">
+                        <lightning-input data-id="forcerAdresse" name="forcerAdresse" label="Forcer Adresse" 
+                        checked={checked} type="checkbox" onclick={handleCheckBoxforcerAdresse}></lightning-input>
+                    </div>
+                    <div class="slds-m-bottom_xx-small slds-m-top_xx-small">
+                        <lightning-input data-id="adresseFacturation" name="adresseFacturation" label="Adresse de facturation identique ?" 
+                        checked={checkedAdresseFacturation} type="checkbox" onclick={handleCheckBoxadresseFacturation}></lightning-input>
+                    </div>
+            </lightning-layout-item>
+            <lightning-layout-item flexibility="grow">
+                <div class="header-column slds-m-left_x-small slds-m-right_x-small">
+                    <lightning-combobox
+                        name="pays"
+                        label="Pays"
+                        value={valuePays}
+                        options={optionsPays}
+                        onchange={handleChangePays}
+                        disabled={isDisabled}
+                        required>
+                    </lightning-combobox>
+                    <lightning-input data-id="precisionadresse" label="Precision Adresse" name="precisionadresse" type="text" 
+                    value={precisionadresse} onchange={handleChangePrecisionAdress} disabled={isDisabled}></lightning-input>
+                    
+                </div>
+            </lightning-layout-item>
+        </lightning-layout>
+    </div>
+</template>

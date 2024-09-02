@@ -9,8 +9,10 @@
         <targetConfig targets="lightning__FlowScreen">
             <property name="ancienIndex" type="String" role="inputOnly"/>
             <property name="dateDernierReleveIndex" type="String" role="inputOnly"/>
-            <property name="IndexAbonnement" type="String" role="inputOnly"/>
-            <property name="dateReleve" type="String" role="inputOnly"/>
+            <property name="IndexAbonnementInput" type="String" role="inputOnly"/>
+            <property name="IndexAbonnementOutput" type="String" role="outputOnly"/>
+            <property name="dateReleveInput" type="String" role="inputOnly"/>
+            <property name="dateReleveOutput" type="Date" role="outputOnly"/>
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

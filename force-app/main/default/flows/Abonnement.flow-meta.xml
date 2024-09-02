@@ -1,6 +1,122 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <description>Before update case avec Id_compte crée et Id_branchement
+Creation du compte.
+Mise a jour du compteur lié au branchement qui est lié a l&apos;adresse desservie recuperé dans ce flow.</description>
+        <name>updateCaseHandle</name>
+        <label>updateCaseHandle</label>
+        <locationX>314</locationX>
+        <locationY>782</locationY>
+        <actionName>caseHandle</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>infoClientAndAdressCorresp</targetReference>
+        </connector>
+        <flowTransactionModel>Automatic</flowTransactionModel>
+        <inputParameters>
+            <name>nom</name>
+            <value>
+                <elementReference>Nom</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>prenom</name>
+            <value>
+                <elementReference>Prenom</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>ville</name>
+            <value>
+                <elementReference>Getcity</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>caseHandle</nameSegment>
+        <versionSegment>1</versionSegment>
+    </actionCalls>
     <apiVersion>61.0</apiVersion>
+    <assignments>
+        <name>assignCaseId</name>
+        <label>assignCaseId</label>
+        <locationX>314</locationX>
+        <locationY>242</locationY>
+        <assignmentItems>
+            <assignToReference>caseId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>getCaseId.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>branchementId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>getCaseId.Branchement_Id__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>accId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>getCaseId.AccountId</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>isNewAbo</targetReference>
+        </connector>
+    </assignments>
+    <decisions>
+        <name>isNewAbo</name>
+        <label>isNewAbo</label>
+        <locationX>314</locationX>
+        <locationY>350</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>oldCase</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>caseId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>accId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>branchementId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>InfoClientDejaExistantes</targetReference>
+            </connector>
+            <label>oldCase</label>
+        </rules>
+        <rules>
+            <name>newCase</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>caseId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>screen_getCity</targetReference>
+            </connector>
+            <label>newCase</label>
+        </rules>
+    </decisions>
     <environments>Default</environments>
     <interviewLabel>Abonnement {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Abonnement</label>
@@ -23,14 +139,38 @@
         </value>
     </processMetadataValues>
     <processType>Flow</processType>
+    <recordLookups>
+        <name>getCaseId</name>
+        <label>getCaseId</label>
+        <locationX>314</locationX>
+        <locationY>134</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>assignCaseId</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Case</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
     <screens>
         <name>getInfoClientAndIndex</name>
         <label>getInfoClientAndIndex</label>
-        <locationX>176</locationX>
-        <locationY>350</locationY>
+        <locationX>314</locationX>
+        <locationY>674</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
+        <connector>
+            <targetReference>updateCaseHandle</targetReference>
+        </connector>
         <fields>
             <name>infoClient</name>
             <fieldText>&lt;p&gt;&lt;span style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;Nom : {!Nom}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;Prénom : {!Prenom}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;Ville : &lt;/span&gt;{!Getcity}&lt;/p&gt;&lt;p&gt;Adresse desservie : {!Adressedesservie}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Dernier rélevé d&apos;index :&lt;/p&gt;&lt;p&gt;{!AncienIndex}&lt;/p&gt;&lt;p&gt;Date du dernier relevé d&apos;index :&lt;/p&gt;&lt;p&gt;{!DateDernierReleveIndex}&lt;/p&gt;</fieldText>
@@ -80,17 +220,184 @@
                     <extensionName>c:verifierIndex_Screen3</extensionName>
                     <fieldType>ComponentInstance</fieldType>
                     <inputParameters>
-                        <name>dateReleve</name>
+                        <name>ancienIndex</name>
+                        <value>
+                            <elementReference>AncienIndex</elementReference>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>dateDernierReleveIndex</name>
+                        <value>
+                            <elementReference>DateDernierReleveIndex</elementReference>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>dateReleveInput</name>
                         <value>
                             <elementReference>date_releve</elementReference>
                         </value>
                     </inputParameters>
                     <inputParameters>
-                        <name>IndexAbonnement</name>
+                        <name>IndexAbonnementInput</name>
                         <value>
                             <elementReference>IndexAbo</elementReference>
                         </value>
                     </inputParameters>
+                    <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+                    <isRequired>true</isRequired>
+                    <outputParameters>
+                        <assignToReference>IndexAbonnementInput</assignToReference>
+                        <name>IndexAbonnementOutput</name>
+                    </outputParameters>
+                    <outputParameters>
+                        <assignToReference>dateReleveIntput</assignToReference>
+                        <name>dateReleveOutput</name>
+                    </outputParameters>
+                </fields>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>12</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <isRequired>false</isRequired>
+            <regionContainerType>SectionWithoutHeader</regionContainerType>
+        </fields>
+        <fields>
+            <name>footerNav3</name>
+            <extensionName>c:footerNavigation</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+        </fields>
+        <showFooter>false</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <name>infoClientAndAdressCorresp</name>
+        <label>infoClientAndAdressCorresp</label>
+        <locationX>314</locationX>
+        <locationY>890</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>infoClientTitulaire</name>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;Information Titulaire &lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Adresse Desservie : {!Adressedesservie}&lt;/p&gt;&lt;p&gt;{!Getcity}&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>infoClientAndAdressCorresp_Section1</name>
+            <fieldType>RegionContainer</fieldType>
+            <fields>
+                <name>infoClientAndAdressCorresp_Section1_Column1</name>
+                <fieldType>Region</fieldType>
+                <fields>
+                    <name>infoClientAdressCorresp</name>
+                    <extensionName>c:infoClientAdrrCorresp</extensionName>
+                    <fieldType>ComponentInstance</fieldType>
+                    <inputParameters>
+                        <name>nom</name>
+                        <value>
+                            <elementReference>Nom</elementReference>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>prenom</name>
+                        <value>
+                            <elementReference>Prenom</elementReference>
+                        </value>
+                    </inputParameters>
+                    <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+                    <isRequired>true</isRequired>
+                    <storeOutputAutomatically>true</storeOutputAutomatically>
+                </fields>
+                <fields>
+                    <name>adressCorresp</name>
+                    <fieldText>&lt;p&gt;Adresse de correspondance normalisée :&lt;/p&gt;</fieldText>
+                    <fieldType>DisplayText</fieldType>
+                </fields>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>12</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <isRequired>false</isRequired>
+            <regionContainerType>SectionWithoutHeader</regionContainerType>
+        </fields>
+        <fields>
+            <name>footerNav4</name>
+            <extensionName>c:footerNavigation</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+        </fields>
+        <showFooter>false</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <name>InfoClientDejaExistantes</name>
+        <label>InfoClientDejaExistantes</label>
+        <locationX>50</locationX>
+        <locationY>458</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>infoClientDejaExistante</name>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;Nom : {!getCaseId.Account.Nom__c}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;Prénom : {!getCaseId.Account.Prenom__c}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;Ville : {!getCaseId.Branchement_Id__r.adresse_desservie__r.Ville__c}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Adresse desservie : {!getCaseId.Branchement_Id__r.adresse_desservie__r.adresse_desservie__c}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Dernier rélevé d&apos;index :&lt;/p&gt;&lt;p&gt;{!getCaseId.Branchement_Id__r.Index_Compteur__c}&lt;/p&gt;&lt;p&gt;Date du dernier relevé d&apos;index :&lt;/p&gt;&lt;p&gt;{!getCaseId.Branchement_Id__r.Date_dernier_releve_index_compteur__c}&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>InfoClientDejaExistantes_Section1</name>
+            <fieldType>RegionContainer</fieldType>
+            <fields>
+                <name>InfoClientDejaExistantes_Section1_Column1</name>
+                <fieldType>Region</fieldType>
+                <fields>
+                    <name>IndexAboDeja</name>
+                    <dataType>String</dataType>
+                    <fieldText>Index d&apos;abonnement</fieldText>
+                    <fieldType>InputField</fieldType>
+                    <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+                    <isRequired>true</isRequired>
+                </fields>
+                <fields>
+                    <name>date_releve_deja</name>
+                    <dataType>Date</dataType>
+                    <fieldText>Date du relevé</fieldText>
+                    <fieldType>InputField</fieldType>
+                    <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+                    <isRequired>true</isRequired>
+                </fields>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>12</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <isRequired>false</isRequired>
+            <regionContainerType>SectionWithoutHeader</regionContainerType>
+        </fields>
+        <fields>
+            <name>InfoClientDejaExistantes_Section2</name>
+            <fieldType>RegionContainer</fieldType>
+            <fields>
+                <name>InfoClientDejaExistantes_Section2_Column1</name>
+                <fieldType>Region</fieldType>
+                <fields>
+                    <name>verifierIndexDeja</name>
+                    <extensionName>c:verifierIndex_Screen3</extensionName>
+                    <fieldType>ComponentInstance</fieldType>
                     <inputParameters>
                         <name>ancienIndex</name>
                         <value>
@@ -119,7 +426,7 @@
             <regionContainerType>SectionWithoutHeader</regionContainerType>
         </fields>
         <fields>
-            <name>footerNav3</name>
+            <name>footerNav3Deja</name>
             <extensionName>c:footerNavigation</extensionName>
             <fieldType>ComponentInstance</fieldType>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
@@ -132,8 +439,8 @@
     <screens>
         <name>screen_getCity</name>
         <label>screen_getCity</label>
-        <locationX>176</locationX>
-        <locationY>134</locationY>
+        <locationX>314</locationX>
+        <locationY>458</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -187,8 +494,8 @@
     <screens>
         <name>screen_infoClient</name>
         <label>screen_infoClient</label>
-        <locationX>176</locationX>
-        <locationY>242</locationY>
+        <locationX>314</locationX>
+        <locationY>566</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -233,6 +540,10 @@
                         <assignToReference>DateDernierReleveIndex</assignToReference>
                         <name>dateRernierReleveIndex</name>
                     </outputParameters>
+                    <outputParameters>
+                        <assignToReference>adresseDesservieId</assignToReference>
+                        <name>idadressdesservie</name>
+                    </outputParameters>
                 </fields>
                 <inputParameters>
                     <name>width</name>
@@ -274,19 +585,40 @@
         <showHeader>false</showHeader>
     </screens>
     <start>
-        <locationX>50</locationX>
+        <locationX>188</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>screen_getCity</targetReference>
+            <targetReference>getCaseId</targetReference>
         </connector>
     </start>
     <status>Active</status>
+    <variables>
+        <name>accId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <name>accountId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
     <variables>
         <name>Adressedesservie</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>true</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>adresseDesservieId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
     </variables>
     <variables>
         <name>AncienIndex</name>
@@ -296,10 +628,31 @@
         <isOutput>true</isOutput>
     </variables>
     <variables>
+        <name>branchementId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <name>caseId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
         <name>DateDernierReleveIndex</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <name>dateReleveIntput</name>
+        <dataType>Date</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
         <isOutput>true</isOutput>
     </variables>
     <variables>
@@ -310,17 +663,42 @@
         <isOutput>true</isOutput>
     </variables>
     <variables>
+        <name>IndexAbonnementInput</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
         <name>Nom</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
-        <isInput>true</isInput>
-        <isOutput>false</isOutput>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
     </variables>
     <variables>
         <name>Prenom</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <name>RecordDetails</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
         <isInput>true</isInput>
         <isOutput>false</isOutput>
+        <objectType>Case</objectType>
+    </variables>
+    <variables>
+        <name>recordId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <elementReference>getCaseId.Id</elementReference>
+        </value>
     </variables>
 </Flow>

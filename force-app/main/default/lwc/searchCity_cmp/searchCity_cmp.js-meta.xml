@@ -8,8 +8,7 @@
     </targets>
     <targetConfigs>
         <targetConfig targets="lightning__FlowScreen">
-            <property name="getCity" type="String" role="outputOnly"/>
-            <!-- <property name="getCity" label="City" type="String"/> -->        
+            <property name="getCity" type="String" role="outputOnly"/>     
         </targetConfig>
     </targetConfigs>    
 </LightningComponentBundle>

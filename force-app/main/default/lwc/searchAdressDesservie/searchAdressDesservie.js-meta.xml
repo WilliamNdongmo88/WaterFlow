@@ -11,6 +11,7 @@
             <property name="nom" type="String" role="outputOnly"/>
             <property name="prenom" type="String" role="outputOnly"/>
             <property name="adressdesservie" type="String" role="outputOnly"/>
+            <property name="idadressdesservie" type="String" role="outputOnly"/>
             <property name="ancienIndex" type="String" role="outputOnly"/>
             <property name="dateRernierReleveIndex" type="String" role="outputOnly"/>
         </targetConfig>

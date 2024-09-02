@@ -11,6 +11,7 @@ export default class SearchAdressDesservie extends LightningElement {
     @track showError = false;
     @track selectedRecordIds = [];
     @track selectedRadioRecord = '';
+    @track isLoading = false;
     @wire(MessageContext)
     messageContext;
     infoClient;
@@ -19,6 +20,7 @@ export default class SearchAdressDesservie extends LightningElement {
     @api nom;
     @api prenom;
     @api adressdesservie;
+    @api idadressdesservie;
     @api ancienIndex;
     @api dateRernierReleveIndex;
 
@@ -46,6 +48,7 @@ export default class SearchAdressDesservie extends LightningElement {
         var isValid  =  this.checkInfoClient();
         if(isValid){
             if (this.searchTerm) {
+                this.isLoading = true;
                 const obj = {};
                         obj.searchTerm = this.searchTerm;
                         obj.cityName = this.city;
@@ -73,6 +76,9 @@ export default class SearchAdressDesservie extends LightningElement {
                         this.AdresseDesservies = [];
                         this.showTable = false;
                         this.showError = true;
+                    })
+                    .finally(() => {
+                        this.isLoading = false;
                     });
             } else {
                 this.AdresseDesservies = [];
@@ -94,23 +100,23 @@ export default class SearchAdressDesservie extends LightningElement {
         });
     }
     getAllSelectedRecord() {
-        let idadressdesservie = '';
+        this.idadressdesservie = '';
         let selectedRadioRows = this.template.querySelectorAll('lightning-input[data-name="radio"]');
         selectedRadioRows.forEach(currentItem => {
             if (currentItem.type === 'radio' && currentItem.checked) {
-                idadressdesservie = currentItem.value;
+                this.idadressdesservie = currentItem.value;
                 const payload = {
                     isdisable : false,
                 };
                 publish(this.messageContext, COUNT_UPDATED_CHANNEL, payload);
             }
         })
-        console.log('Id adress desservie : ' + idadressdesservie);
+        console.log('Id adress desservie : ' + this.idadressdesservie);
     }
 
     checkInfoClient(){
-        var nom =this.template.querySelector('[data-id="nom"]');
-        var prenom     =this.template.querySelector('[data-id="prenom"]');
+        var nom = this.template.querySelector('[data-id="nom"]');
+        var prenom = this.template.querySelector('[data-id="prenom"]');
 
         var isvalid = true;
         

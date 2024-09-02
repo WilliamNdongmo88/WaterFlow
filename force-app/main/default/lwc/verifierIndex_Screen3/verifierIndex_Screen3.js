@@ -7,10 +7,12 @@ export default class VerifierIndex_Screen3 extends LightningElement {
     messageContext;
     @api ancienIndex;
     @api dateDernierReleveIndex;
-    @api IndexAbonnement;
+    @api IndexAbonnementInput;
+    @api IndexAbonnementOutput;
+    @api dateReleveInput;
+    @api dateReleveOutput;
     indexMin = 0;
     indexMax = 0;
-    @api dateReleve;
     indexCorrect = false;
     indexTropFaible = false;
     indexTropFort = false;
@@ -20,25 +22,29 @@ export default class VerifierIndex_Screen3 extends LightningElement {
 
 
     handleCheckIndex(){
-        const lastDate = this.transformDate(this.dateDernierReleveIndex);
-        this.moisTotal = this.getMonthDifference(lastDate,this.dateReleve);
-        this.indexMin = Number(this.ancienIndex) + Number(this.moisTotal)*5;
-        this.indexMax = this.indexMin + Number(this.moisTotal);
-        console.log('ancienIndex :',this.ancienIndex,'indexAbo : ',this.IndexAbonnement, 'indexMin : ', this.indexMin);
-        if (Number(this.IndexAbonnement) < this.indexMin) {
+        const lastDateReleveIndex = this.transformDate(this.dateDernierReleveIndex);
+        this.moisTotal = this.getMonthDifference(lastDateReleveIndex,this.dateReleveInput);
+        this.indexMin = Number(this.ancienIndex) + Number(this.moisTotal);
+        this.indexMax = this.indexMin + Number(this.moisTotal)*5;
+        console.log('ancienIndex :',this.ancienIndex,'indexAbo : ',this.IndexAbonnementInput,
+                     'indexMin : ', this.indexMin , 'indexMax : ', this.indexMax);
+        console.log('moisTotal :',this.moisTotal);
+        if (Number(this.IndexAbonnementInput) < this.indexMin) {
             this.indexTropFaible = true;
             this.indexTropFort = false;
             this.indexCorrect = false;
             this.isdisableButton = true;
            //this.isdisablecheckbox = false;
             console.log('isdisableButton :',this.isdisableButton,'isdisablecheckbox : ',this.isdisablecheckbox);
-        }else if (Number(this.IndexAbonnement) > this.indexMax) {
+        }else if (Number(this.IndexAbonnementInput) > this.indexMax) {
             this.indexTropFort = true;
             this.indexTropFaible = false
             this.indexCorrect = false;
             this.isdisableButton = true;
             //this.isdisablecheckbox = false;
         }else{
+            this.IndexAbonnementOutput = this.IndexAbonnementInput;
+            this.dateReleveOutput = this.dateReleveInput;
             this.indexCorrect = true;
             this.indexTropFort = false;
             this.indexTropFaible = false
@@ -55,6 +61,8 @@ export default class VerifierIndex_Screen3 extends LightningElement {
         
     
         if (checkbox) {
+            this.IndexAbonnementOutput = this.IndexAbonnementInput;
+            this.dateReleveOutput = this.dateReleveInput;
             this.isdisableButton = true;
             const payload = {
                 isdisable: this.isdisable,
@@ -71,6 +79,13 @@ export default class VerifierIndex_Screen3 extends LightningElement {
             };
             publish(this.messageContext, COUNT_UPDATED_CHANNEL, payload);
             console.log('/false/isdisableButton :',this.isdisableButton,'isdisablecheckbox : ',this.isdisablecheckbox);
+        }
+    }
+    handleCheckBoxTryAgain(){
+        let checkbox = this.template.querySelector('[data-id="checkbox"]').checked;
+        console.log('/*/checkbox :',checkbox);
+        if (!checkbox) {
+            this.isdisableButton = false;
         }
     }
 
@@ -99,14 +114,17 @@ export default class VerifierIndex_Screen3 extends LightningElement {
         return String(formattedDate);
     }
 
-    getMonthDifference(startDate, endDate) {
-        const start = new Date(startDate);
-        const end = new Date(endDate);
+    getMonthDifference(lastDate, newDate) {
+        const start = new Date(lastDate);
+        const end = new Date(newDate);
     
         const yearsDiff = end.getFullYear() - start.getFullYear();
         const monthsDiff = end.getMonth() - start.getMonth();
     
-        const totalMonths = yearsDiff * 12 + monthsDiff;
+        let totalMonths = yearsDiff * 12 + monthsDiff;
+        if (totalMonths <= 0) {
+            totalMonths = 1;
+        }
     
         return totalMonths;
     }

@@ -8,13 +8,15 @@
                 <p class="custom-message">Consommation trop faible</p>
             </template>
             <template if:true={indexCorrect}>
-                <p class="customMessage">Consommation correcte</p>
+                <p class="customMessage">Index ok</p>
             </template>
-            <div class="checkbox">
-                <p class="text">Confirmer le relevé d'index malgré l'anomalie.</p>
-                <div class="slds-m-left_none box">
-                    <lightning-input data-id="checkbox" name="checkbox" checked={checked} type="checkbox" onclick={handleCheckBox} disabled={isdisablecheckbox}></lightning-input>
-                </div>
+            <div class="slds-m-bottom_xx-small slds-m-top_xx-small">
+                <lightning-input data-id="checkbox" name="checkbox" label="Confirmer le relevé d'index malgré l'anomalie." 
+                checked={checked} type="checkbox" onclick={handleCheckBox} disabled={isdisablecheckbox}></lightning-input>
+            </div>
+            <div class="slds-m-bottom_xx-small slds-m-top_xx-small">
+                <lightning-input data-id="checkbox" name="checkbox" label="Réessayé de saisir le bon index." 
+                checked={checked} type="checkbox" onclick={handleCheckBoxTryAgain} disabled={isdisablecheckboxTryAgain}></lightning-input>
             </div>
         </div>
         <div class="custom-right-section">

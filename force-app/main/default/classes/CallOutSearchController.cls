@@ -17,6 +17,31 @@ public with sharing class CallOutSearchController {
     }
 
     @AuraEnabled(cacheable=true)
+    public static List<Map<String, String>> searchAdresseApi() {
+        List<Map<String, String>> listDatas = new List<Map<String, String>>();
+        GetServiceWeb getcity = new GetServiceWeb();
+        String endpoint = 'https://adress-eta.vercel.app/';
+        String jsonStr = getcity.getserviceweb(endpoint);
+        Region regionData = (Region) JSON.deserialize(jsonStr, Region.class);
+        System.debug('###regionData--->' + regionData);
+    
+        for (Ville ville : regionData.Ouest) {
+            Map<String, String> mapDatas = new Map<String, String>();
+            mapDatas.put('Ville', ville.ville);
+            
+            for (Adresse adresse : ville.adresses) {
+                mapDatas.put('Adresse', adresse.adresse);
+                mapDatas.put('Code_postal', adresse.code_postal);
+                
+                listDatas.add(new Map<String, String>(mapDatas));
+            }
+        }
+        System.debug('###listDatas--->' + listDatas);
+        return listDatas;
+    }
+    
+
+    @AuraEnabled(cacheable=true)
     public static List<AdresseDesservie__c> searchAdressDesservieApi(String jsonObj) {
         WrapperData data = (WrapperData) JSON.deserialize(jsonObj, WrapperData.class);
         List<AdresseDesservie__c> adressList;
@@ -64,4 +89,19 @@ public with sharing class CallOutSearchController {
         public String searchTerm { get; set; }
         public String cityName { get; set; }
     }
+
+    public class Adresse {
+        public String adresse { get; set; }
+        public String code_postal { get; set; }
+    }
+    
+    public class Ville {
+        public String ville { get; set; }
+        public List<Adresse> adresses { get; set; }
+    }
+    
+    public class Region {
+        public List<Ville> Ouest { get; set; }
+    }
+    
 }
